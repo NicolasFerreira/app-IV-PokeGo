@@ -3,6 +3,7 @@ var btn = document.getElementById('btn')
 
 var PokemonsTemp = []
 var PokemonsFinal = []
+var PokemonsSave = []
 
 function myList(){
   var result = list.value.split('  ');
@@ -59,6 +60,8 @@ function myList(){
     return b.Total - a.Total
   }); */
 
+  PokemonsSave = PokemonsFinal
+
   console.log(PokemonsFinal)
   displayList()
 }
@@ -66,6 +69,7 @@ function myList(){
 function displayList(){
   if(PokemonsFinal.length > 0){
     var ul = document.getElementById('display-list')
+    ul.innerHTML = '' // reset before draw all pokemons
 
     for (let index = 0; index < PokemonsFinal.length; index++) {
       let li = document.createElement("li");
@@ -120,11 +124,64 @@ function displayList(){
       
     }
 
+  }else {
+    var ul = document.getElementById('display-list')
+    ul.innerHTML = '' // reset before draw all pokemons
   }
 }
 
 
+// search function
+document.getElementById('search').addEventListener('input',function(){
+  let research = document.getElementById('search').value
+  let tabSearch = []
+  PokemonsFinal = PokemonsSave
 
-document.getElementById('search').addEventListener('change',function(){
-  console.log(document.getElementById('search').value)
+  for (let index = 0; index < PokemonsFinal.length; index++) {
+    const element = PokemonsFinal[index];
+    let name = PokemonsFinal[index].Name.toLowerCase()
+    if(name.indexOf(research.toLowerCase()) >= 0){
+      
+      tabSearch.push(element)
+    }
+  }
+  console.log(tabSearch)
+  PokemonsFinal = tabSearch
+  console.log(PokemonsFinal)
+  displayList()
 })
+
+// orderByRecent
+function orderByRecent(){
+  PokemonsFinal.sort(function (a, b) {
+    return b.Date - a.Date
+  }); 
+  displayList()
+}
+
+function orderByNumber(){
+  PokemonsFinal.sort(function (a, b) {
+    return b.CP - a.CP
+  });
+  PokemonsFinal.sort(function (a, b) {
+    return a.Number - b.Number
+  });
+  displayList()
+}
+
+function orderByIV(){
+  PokemonsFinal.sort(function (a, b) {
+    return b.Total - a.Total
+  });
+  displayList()
+}
+
+function orderByIVAndNumber(){
+  PokemonsFinal.sort(function (a, b) {
+    return b.Total - a.Total
+  });
+  PokemonsFinal.sort(function (a, b) {
+    return a.Number - b.Number
+  });
+  displayList()
+}
