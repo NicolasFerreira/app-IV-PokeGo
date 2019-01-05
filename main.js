@@ -12,7 +12,7 @@ function myList(){
   var result = init.split('\n')
 
   console.log(result)
-  document.getElementById('test').innerHTML = result
+  document.getElementById('test').innerHTML = result[1]
   
   result.forEach(ligne => {
     var result2 = ligne.split(',')
