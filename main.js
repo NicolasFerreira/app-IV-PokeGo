@@ -8,7 +8,7 @@ var PokemonsSave = []
 function myList(){
   
   var init = list.value.replace(/ /g, '')
-  var result = init.split('  ')
+  var result = init.split('\n\n')
 
   console.log(result)
   document.getElementById('test').innerHTML = result
