@@ -50,5 +50,6 @@ ul{
 
 
 textarea {
-  width: 80vw;
+  width: 100vw;
+  height: 200px;
 }
