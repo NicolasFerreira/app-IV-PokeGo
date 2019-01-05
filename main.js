@@ -7,6 +7,8 @@ var PokemonsSave = []
 
 function myList(){
   var result = list.value.split('\n\n');
+
+  document.getElementById('test').innerHTML = result
   
   result.forEach(ligne => {
     var result2 = ligne.split(',')
