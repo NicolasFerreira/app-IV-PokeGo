@@ -6,8 +6,8 @@ var PokemonsFinal = []
 var PokemonsSave = []
 
 function myList(){
-  var result = list.value.split('  ');
-
+  var result = list.value.split('\n\n');
+  
   result.forEach(ligne => {
     var result2 = ligne.split(',')
     PokemonsTemp.push(result2)
