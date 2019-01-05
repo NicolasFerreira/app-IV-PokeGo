@@ -8,11 +8,7 @@ var PokemonsSave = []
 function myList(){
   
   var init = list.value.replace(/ /g, '')
-  console.log(init)
   var result = init.split('\n')
-
-  console.log(result)
-  document.getElementById('test').innerHTML = result[1]
   
   result.forEach(ligne => {
     var result2 = ligne.split(',')
