@@ -47,3 +47,8 @@ ul{
   background: rgba(255, 2, 2, 0.2);
   box-shadow: 0 3px 6px rgba(255, 2, 2, 0.2), 0 3px 6px rgba(255, 2, 2, 0.2);
 }
+
+
+textarea {
+  width: 80vw;
+}
