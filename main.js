@@ -13,7 +13,7 @@ var listeUser = document.getElementById('username-list')
 
 async function init(){
   var bdd = []
-  await $.get(`http://localhost:9000/fiche`, (datas) => { bdd = datas })
+  await $.get(`http://lgdm.ddns.net:9000/fiche`, (datas) => { bdd = datas })
   listeUser.innerHTML = ''
 
   bdd.All.forEach(element => {
@@ -27,7 +27,7 @@ init()
 
 async function displayFiche(name){
   console.log(name)
-  await $.get(`http://localhost:9000/fiche/${name}`, (fiche) => {
+  await $.get(`http://lgdm.ddns.net:9000/fiche/${name}`, (fiche) => {
      listeUser.innerHTML = ''
      console.log(fiche[0].datasPokemons)
      PokemonsFinal = fiche[0].datasPokemons
@@ -77,7 +77,7 @@ async function myList(){
   // envoie a la bdd 
   $.ajax({
 		type: "POST",
-		url: `http://localhost:9000/fiche`,
+		url: `http://lgdm.ddns.net:9000/fiche`,
 		dataType: 'json',
 		headers: {
 			"Content-Type":"application/json; charset=utf-8"
@@ -86,7 +86,7 @@ async function myList(){
 			"username": username,
 			"datasPokemons": PokemonsBDD
 			}),
-		success: function(result){
+		success: async function(result){
       PokemonsSave = result.data.datasPokemons
       PokemonsFinal = result.data.datasPokemons
 
@@ -98,10 +98,22 @@ async function myList(){
       return a.Number - b.Number
     });
     //displayList()
-    $.get(`http://localhost:9000/fiche`, (datas) => { console.log(datas) })
+    //reset list users
+      var bdd = []
+      await $.get(`http://lgdm.ddns.net:9000/fiche`, (datas) => { bdd = datas })
+      listeUser.innerHTML = ''
+      console.log(bdd)
+      bdd.All.forEach(element => {
+        let li = document.createElement("li");
+        li.setAttribute('onclick','displayFiche(this.innerHTML)')
+        li.innerHTML = element.username
+        listeUser.appendChild(li)
+      });
 		}
 		// if fail  : display error message
-	});  
+  });  
+  
+  
 }
 
  function displayList(){
@@ -244,7 +256,7 @@ function toggleBtns(){
 
 // Back function
 async function back(){
-  await $.get(`http://localhost:9000/fiche`, (datas) => { bdd = datas })
+  await $.get(`http://lgdm.ddns.net:9000/fiche`, (datas) => { bdd = datas })
   listeUser.innerHTML = ''
   document.getElementById('display-list').innerHTML = ''
   toggleBtns()
