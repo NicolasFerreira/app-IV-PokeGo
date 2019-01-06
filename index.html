@@ -8,21 +8,27 @@
   <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
 </head>
 <body>
-  <div>
-      <textarea id="list" placeholder="Paste your list"></textarea>
-      <button onclick="myList()">Push</button>
-      <input id="search" type="text" placeholder="Search" />
-      <button onclick="orderByRecent()">Recent</button>
-      <button onclick="orderByNumber()">Number</button>
-      <button onclick="orderByIV()">IV</button>
-      <button onclick="orderByIVAndNumber()">IV & Number</button>
+  <div id="top">
+      <input class="btns" id="username" type="text" placeholder="Nom de dresseur" />
+      <textarea class="btns" id="list" placeholder="Import liste de pokego++"></textarea>
+      <button class="btns" onclick="myList()">Push</button>
+      
+      <button class="btns display-none" onclick="back()"><- Retour </button>
+      <input class="btns display-none" id="search" type="text" placeholder="Search" />
+      <button class="btns display-none" onclick="orderByRecent()">Recent</button>
+      <button class="btns display-none" onclick="orderByNumber()">Number</button>
+      <button class="btns display-none" onclick="orderByIV()">IV</button>
+      <button class="btns display-none" onclick="orderByIVAndNumber()">IV & Number</button>
   </div>
   <div id="test"></div>
   <div>
     <ul id="display-list"></ul>
   </div>
+  <div>
+    <ul id="username-list"></ul>
+  </div>
         
-    
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="main.js"></script>
 </body>
 </html>

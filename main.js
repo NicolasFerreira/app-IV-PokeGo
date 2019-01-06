@@ -2,10 +2,43 @@ var list = document.getElementById('list')
 var btn = document.getElementById('btn')
 
 var PokemonsTemp = []
+var PokemonsBDD = []
 var PokemonsFinal = []
 var PokemonsSave = []
 
-function myList(){
+
+//recup list username
+
+var listeUser = document.getElementById('username-list')
+
+async function init(){
+  var bdd = []
+  await $.get(`http://localhost:9000/fiche`, (datas) => { bdd = datas })
+  listeUser.innerHTML = ''
+
+  bdd.All.forEach(element => {
+    let li = document.createElement("li");
+    li.setAttribute('onclick','displayFiche(this.innerHTML)')
+    li.innerHTML = element.username
+    listeUser.appendChild(li)
+  });
+}
+init()
+
+async function displayFiche(name){
+  console.log(name)
+  await $.get(`http://localhost:9000/fiche/${name}`, (fiche) => {
+     listeUser.innerHTML = ''
+     console.log(fiche[0].datasPokemons)
+     PokemonsFinal = fiche[0].datasPokemons
+     displayList()
+     toggleBtns()
+     })
+  
+}
+
+// fonction text to bdd -> store
+async function myList(){
   
   var init = list.value.replace(/ /g, '')
   var result = init.split('\n')
@@ -37,38 +70,42 @@ function myList(){
       "Lucky":element[16],
       "Trade":element[17]
     }
-    PokemonsFinal.push(json)
+    PokemonsBDD.push(json)
   }
-  console.log(PokemonsFinal)
+  var username = document.getElementById('username').value
 
-  // number sort
-  PokemonsFinal.sort(function (a, b) {
-    return b.CP - a.CP
-  });
-  /*  PokemonsFinal.sort(function (a, b) {
-    return b.Total - a.Total
-  }); */
-  PokemonsFinal.sort(function (a, b) {
-    return a.Number - b.Number
-  });
+  // envoie a la bdd 
+  $.ajax({
+		type: "POST",
+		url: `http://localhost:9000/fiche`,
+		dataType: 'json',
+		headers: {
+			"Content-Type":"application/json; charset=utf-8"
+	},
+		data: JSON.stringify({ 
+			"username": username,
+			"datasPokemons": PokemonsBDD
+			}),
+		success: function(result){
+      PokemonsSave = result.data.datasPokemons
+      PokemonsFinal = result.data.datasPokemons
 
-  // recent sort
-/*   PokemonsFinal.sort(function (a, b) {
-    return b.Date - a.Date
-  }); */
-
-  // IV sort 
- /*  PokemonsFinal.sort(function (a, b) {
-    return b.Total - a.Total
-  }); */
-
-  PokemonsSave = PokemonsFinal
-
-  console.log(PokemonsFinal)
-  displayList()
+    // number sort
+    PokemonsFinal.sort(function (a, b) {
+      return b.CP - a.CP
+    });
+    PokemonsFinal.sort(function (a, b) {
+      return a.Number - b.Number
+    });
+    //displayList()
+    $.get(`http://localhost:9000/fiche`, (datas) => { console.log(datas) })
+		}
+		// if fail  : display error message
+	});  
 }
 
-function displayList(){
+ function displayList(){
+  console.log('ok')
   if(PokemonsFinal.length > 0){
     var ul = document.getElementById('display-list')
     ul.innerHTML = '' // reset before draw all pokemons
@@ -93,6 +130,8 @@ function displayList(){
         img.setAttribute('src','https://www.pokebip.com/pages/jeuxvideo/pokemon_go/images/pokemon/'+ element.Number.padStart(3, '0') +'a.png')
       }else if(element.Shiny > 0) {
         img.setAttribute('src','https://www.pokebip.com/pages/jeuxvideo/pokemon_go/images/shinies/'+ element.Number.padStart(3, '0') +'.png')
+      }else if(element.Number === undefined) {
+        // c'est pour les pokemons bug où le num bug
       }else {
         img.setAttribute('src','https://www.pokebip.com/pages/jeuxvideo/pokemon_go/images/pokemon/'+ element.Number.padStart(3, '0') +'.png')
       }
@@ -186,4 +225,34 @@ function orderByIVAndNumber(){
     return a.Number - b.Number
   });
   displayList()
+}
+
+
+
+// Partie affichage des boutons en fonction de l'état du site
+
+function toggleBtns(){
+  var btns = document.getElementsByClassName('btns')
+  console.log(btns)
+
+  for (let index = 0; index < btns.length; index++) {
+    const element = btns[index];
+    element.classList.toggle('display-none')
+  }
+}
+
+
+// Back function
+async function back(){
+  await $.get(`http://localhost:9000/fiche`, (datas) => { bdd = datas })
+  listeUser.innerHTML = ''
+  document.getElementById('display-list').innerHTML = ''
+  toggleBtns()
+
+  bdd.All.forEach(element => {
+    let li = document.createElement("li");
+    li.setAttribute('onclick','displayFiche(this.innerHTML)')
+    li.innerHTML = element.username
+    listeUser.appendChild(li)
+  });
 }

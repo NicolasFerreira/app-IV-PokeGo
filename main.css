@@ -3,6 +3,13 @@ body{
   padding:0;
 }
 
+#top{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
 li {
   display: flex;
 flex-direction: column;
@@ -50,6 +57,10 @@ ul{
 
 
 textarea {
-  width: 100vw;
-  height: 200px;
+  width: 100px;
+  height: 100px;
+}
+
+.display-none {
+  display: none;
 }
